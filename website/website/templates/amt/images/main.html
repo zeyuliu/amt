@@ -1,0 +1,164 @@
+<html>
+<head>
+    <style type="text/css">
+    div.drag {
+    position: relative;
+    float: left;
+    }
+
+    div.description {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      opacity: 0.6;
+      background-color: white;
+    }
+    p.description_content {
+      padding: 5px;
+      margin: 0px;
+    }
+    
+
+    </style>
+</head>
+<body>
+
+{% block images %}
+    {% for image in images %}
+      <div class="drag"><img src="{{ STATIC_URL }}media/images/{{ image.image_id }}.jpg" height="250" title="Image #{{ forloop.counter}}">
+        <div class="description">
+        <p class="description_content">Image #{{ forloop.counter }}</p>
+        </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+<br style="clear:left;" />
+
+{% block questions %}
+<div class="questions">
+  <form class="form-ns-question-job" action="JavaScript:completeJob()"> {% csrf_token %}
+    Will add css and formatting later. These are just sample questions. The wording can be rephrased...<br />
+    For the 1st image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p1_score" required="required" value="1"> 1
+    <input type="radio" name="p1_score" required="required" value="2"> 2
+    <input type="radio" name="p1_score" required="required" value="3"> 3
+    <input type="radio" name="p1_score" required="required" value="4"> 4
+    <input type="radio" name="p1_score" required="required" value="5"> 5
+    <input type="radio" name="p1_score" required="required" value="6"> 6
+    <br/>
+    For the 2nd image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p2_score" required="required" value="1"> 1
+    <input type="radio" name="p2_score" required="required" value="2"> 2
+    <input type="radio" name="p2_score" required="required" value="3"> 3
+    <input type="radio" name="p2_score" required="required" value="4"> 4
+    <input type="radio" name="p2_score" required="required" value="5"> 5
+    <input type="radio" name="p2_score" required="required" value="6"> 6
+    <br />
+    For the 3rd image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p3_score" required="required" value="1"> 1
+    <input type="radio" name="p3_score" required="required" value="2"> 2
+    <input type="radio" name="p3_score" required="required" value="3"> 3
+    <input type="radio" name="p3_score" required="required" value="4"> 4
+    <input type="radio" name="p3_score" required="required" value="5"> 5
+    <input type="radio" name="p3_score" required="required" value="6"> 6
+    <br />
+    For the 4th image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p4_score" required="required" value="1"> 1
+    <input type="radio" name="p4_score" required="required" value="2"> 2
+    <input type="radio" name="p4_score" required="required" value="3"> 3
+    <input type="radio" name="p4_score" required="required" value="4"> 4
+    <input type="radio" name="p4_score" required="required" value="5"> 5
+    <input type="radio" name="p4_score" required="required" value="6"> 6
+    <br />
+    For the 5th image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p5_score" required="required" value="1"> 1
+    <input type="radio" name="p5_score" required="required" value="2"> 2
+    <input type="radio" name="p5_score" required="required" value="3"> 3
+    <input type="radio" name="p5_score" required="required" value="4"> 4
+    <input type="radio" name="p5_score" required="required" value="5"> 5
+    <input type="radio" name="p5_score" required="required" value="6"> 6
+    <br />
+    For the 6th image, how would you rank the women's size relative to the other women? <br />
+    <input type="radio" name="p6_score" required="required" value="1"> 1
+    <input type="radio" name="p6_score" required="required" value="2"> 2
+    <input type="radio" name="p6_score" required="required" value="3"> 3
+    <input type="radio" name="p6_score" required="required" value="4"> 4
+    <input type="radio" name="p6_score" required="required" value="5"> 5
+    <input type="radio" name="p6_score" required="required" value="6"> 6
+    
+    <input type="hidden" name="image_group_id" required="required" value="{{ images.0.image_group.pk }}">
+    <input type="hidden" name="p1_id" required="required" value="{{ images.0.image_id }}">
+    <input type="hidden" name="p2_id" required="required" value="{{ images.1.image_id }}">
+    <input type="hidden" name="p3_id" required="required" value="{{ images.2.image_id }}">
+    <input type="hidden" name="p4_id" required="required" value="{{ images.3.image_id }}">
+    <input type="hidden" name="p5_id" required="required" value="{{ images.4.image_id }}">
+    <input type="hidden" name="p6_id" required="required" value="{{ images.5.image_id }}">
+    <br />
+
+    <input class="btn btn-primary submit-image-score-submission" type="submit" value="Submit Job" onclick="completeJob" />
+  </form>
+</div>
+{% endblock %}
+</body>
+<! -- javascript -->
+<script src="{{ STATIC_URL }}assets/js/jquery-1.9.1.min.js"></script>
+<script src="{{ STATIC_URL }}assets/js/underscore-min.js"></script>
+<script src="{{ STATIC_URL }}assets/js/backbone-min.js"></script>
+<script type="text/javascript">
+var ie=document.all;
+var nn6=document.getElementById&&!document.all;
+var isdrag=false;
+var x,y;
+var dobj;
+function movemouse(e)
+{
+  if (isdrag)
+  {
+    dobj.style.left = nn6 ? tx + e.clientX - x : tx + event.clientX - x;
+    dobj.style.top  = nn6 ? ty + e.clientY - y : ty + event.clientY - y;
+    return false;
+  }
+}
+function selectmouse(e)
+{
+  var fobj       = nn6 ? e.target : event.srcElement;
+  var topelement = nn6 ? "HTML" : "BODY";
+  while (fobj.tagName != topelement && fobj.className != "drag")
+  {
+    fobj = nn6 ? fobj.parentNode : fobj.parentElement;
+  }
+  if (fobj.className=="drag")
+  {
+    isdrag = true;
+    dobj = fobj;
+    tx = parseInt(dobj.style.left+0,10);
+    ty = parseInt(dobj.style.top+0,10);
+    x = nn6 ? e.clientX : event.clientX;
+    y = nn6 ? e.clientY : event.clientY;
+    document.onmousemove=movemouse;
+    return false;
+  }
+}
+document.onmousedown=selectmouse;
+document.onmouseup=new Function("isdrag=false");
+
+</script>
+<script>
+
+function completeJob(eventObj) {
+  var params, $form;
+  $form = $('.form-ns-question-job');
+  params = $form.serialize();
+  alert("Thank you so much for completing the job! Feel free to continue doing more jobs.");
+  $.ajax({
+    type: "POST",
+    url: '{% url 'image-score-submission' %}',
+    data: params,
+  });
+  location.reload(true);
+
+}
+</script>
+  
+</html>

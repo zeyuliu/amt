@@ -1,0 +1,29 @@
+<html>
+<head>
+</head>
+<body>
+<div>
+  <form class="form-ns-question-job"
+    method="POST"
+    action="{% url 'mechanicalturk-ns-question-job' %}">{% csrf_token %}
+    Will add css and formatting later. <br />
+    Job Name <input type="text" name="job_name" required="required" /> <br />
+    Form Name<input type="text" name="form_name" required="required" /> <br />
+    Max Assignments<input type="number" name="max_assignments" required="required" /> <br />
+    Description <input type="text" name="description" required="required" /> <br />
+    Keywords <input type="text" name="keywords" required="required" /> <br />
+    Duration <input type="number" name="duration" required="required" /> <br />
+    Reward <input type="number" name="reward" required="required" /> <br />
+    Question #1 Title<input type="text" name="question_title_1" required="required" /> <br />
+    Choices in the following format: "("choice 1", "weight");("choice 2", "weight"); ... <br />
+    <input type="text" name="choice_string" required="required" /> <br />
+    <input class="btn btn-primary submit-ns-question-job" type="submit" value="Submit Job" />
+  </form>
+</div>
+</body>
+<! -- javascript -->
+<script src="{{ STATIC_URL }}assets/js/jquery-1.9.1.min.js"></script>
+<script src="{{ STATIC_URL }}assets/js/underscore-min.js"></script>
+<script src="{{ STATIC_URL }}assets/js/backbone-min.js"></script>
+<script src="{{ STATIC_URL }}assets/js/ns-question-job.js"></script>
+</html>

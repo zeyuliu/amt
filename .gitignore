@@ -1,0 +1,11 @@
+settings.py
+bin/*
+include/*
+local/*
+config.txt
+lib/*
+*.pyc
+.*.swp
+*.log
+*.pot
+local_settings.py

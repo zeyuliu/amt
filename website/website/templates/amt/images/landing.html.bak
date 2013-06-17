@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Consent Form</title>
+  </head>
+  <body>
+    <div class="consent">
+      <div class="consent-title">
+        <h1>Random stuff blah blah blah</h1>
+      </div>
+      <div class="consent-body">
+        Agree to this and that...
+      </div>
+      <div class="consent-confirm" style="display:inline">
+	<form action="{% url "amt-image-poll" %}" method="get" style="display:inline">
+          <input type="button" class="consent-button-primary" value="I Agree" name="gave-consent"/>
+	  <input type="hidden" name="amt" value="{{ amt }}"/>
+	  <input type="hidden" name="assignmentId" value="{{ assignmentId }}" />
+	  <input type="hidden" name="hitId" value="{{ hitId }}" />
+	</form>
+        <input type="button" class="consent-button-cancel" value="Disagree" onClick="javascript:rejectedConsent()"/>
+      </div>
+    </div>
+  </body>
+  <script>
+  function rejectedConsent()
+  {
+    alert("Thank you for your time. However, you will not be able to continue unless you give your consent to participate.");
+  }
+</script>
+</html>
