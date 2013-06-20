@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Debriefing</title>
+  </head>
+  <body>
+    <div class="debrief-title">
+      <h1>Debriefing</h1>
+    </div>
+    <div class="debrief-content">
+      <div class="debrief-thanks">
+        Thank you for participating in the study. Your data was collected anonymously and there will be no way to match you with your results.
+      </div>
+      <div class='debrief-background'>
+        The study you just completed examined [...].
+      </div>
+      <div class='debrief-purpose'>
+        The purpose of the study is to [..]
+      </div>
+      <div class='debrief-participation'>
+        By participating in this study, you helped by [...]
+      </div>
+      <div class='debrief-followup'>
+        Something about study followup
+      </div>
+      <div class='debrief-additional-information'>
+        If you have additional questions, please feel free to contact the principal investigator at [...]. Additional information can be ....
+      </div>
+    </div>
+    <div class='debrief-confirmation'>
+      Do you agree to the following statement? Note that your answer will not affect whether or not you will be compensated.
+      <div class='debrief-form'>
+        I feel that I have been adequately debriefed about the nature of the study. The investigator has explained the purposes of the research to me and i understand that if I have any questions, I may contact her at[...]
+      </div>
+      <input type="button" class="consent-button-confirm" value="I Agree" onClick="javascript:window.location.href='{% url "amt-image-poll-thanks" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&decision=1'"/>
+      <input type="button" class="consent-button-cancel" value="I Disagree" onClick="javascript:window.location.href='{% url "amt-image-poll-thanks" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&decision=0'"/>
+    </div>
+  </body>
+</html>

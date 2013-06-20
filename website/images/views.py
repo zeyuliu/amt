@@ -25,37 +25,57 @@ def landing(request, template_name='amt/images/landing.html'):
     assignmentId = request.GET.get('assignmentId', default=None)
     hitId = request.GET.get('hitId', default=None)
     if assignmentId and hitId:
-        # Create a Subject object
-	subject = Subject(
-	worker_id=assignmentId,
-	hit_id=hitId,
-	debriefed=False,
-	time_started=datetime.utcnow(),
-	time_completed=None
-	)
-	subject.save()
         data['amt'] = int(True)
     data['assignmentId'] = assignmentId
     data['hitId'] = hitId
-        
     return render_to_response(template_name, data, context_instance=RequestContext(request))
 
 def display(request, template_name='amt/images/main.html'):
-    if request.GET.get('amt', None) == 1:
-	assignmentId = request.GET.get('assignmentId', default=None)
-	hitId = request.GET.get('hitId', default=None)
-	if assignmentId and hitId:
-	    # Find the subject
-	    try:
-		subject = Subject.objects.get(
-		    worker_id=assignmentId,
-		    hit_id=hitId,
-		    time_completed__isnull=True
-		)
-	    except Subject.DoesNotExist:
-		return HttpReponse("hi")
-        
+    amt = request.GET.get('amt', None)
+    assignmentId = request.GET.get('assignmentId', default=None)
+    hitId = request.GET.get('hitId', default=None)
+    if assignmentId and hitId:
+    # Create a Subject object
+        subject = Subject(
+            worker_id=assignmentId,
+            hit_id=hitId,
+            debriefed=False,
+            time_started=datetime.utcnow(),
+            time_completed=None
+        )
+        subject.save()
         image_group = assign_image_group(subject)
     else:
         image_group = assign_image_group()
-    return render_to_response(template_name, {'images':image_group.image_set.all()}, context_instance=RequestContext(request))
+    data = {
+        'assignmentId': assignmentId,
+        'hitId': hitId,
+        'amt': amt,
+        'images': image_group.image_set.all()
+    }
+    return render_to_response(template_name, data, context_instance=RequestContext(request))
+
+def debrief(request, template_name='amt/images/debrief.html'):
+    amt = request.GET.get('amt', None)
+    assignmentId = request.GET.get('assignmentId', default=None)
+    hitId = request.GET.get('hitId', default=None)
+    try:
+        # Grab subject
+        subject = Subject.objects.filter(
+            worker_id=assignmentId,
+            hit_id=hitId,
+            debriefed=False,
+            time_completed__isnull=True
+        ).latest('time_started')
+        subject.debriefed=True
+        subject.time_completed=datetime.utcnow()
+        subject.save()
+    except Subject.DoesNotExist:
+        return HttpResponse('Sorry, an error has occurred. Please make sure you did not press the back button.', status=400)
+
+    data = {
+        'assignmentId': assignmentId,
+        'hitId': hitId,
+        'amt': amt,
+    }
+    return render_to_response(template_name, data, context_instance=RequestContext(request))

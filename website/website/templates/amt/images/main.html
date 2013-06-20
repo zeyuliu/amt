@@ -96,7 +96,7 @@
     <input type="hidden" name="p6_id" required="required" value="{{ images.5.image_id }}">
     <br />
 
-    <input class="btn btn-primary submit-image-score-submission" type="submit" value="Submit Job" onclick="completeJob" />
+    <input class="submit-image-score-submission" type="submit" value="Submit Job" onclick="completeJob" >
   </form>
 </div>
 {% endblock %}
@@ -104,7 +104,6 @@
 <! -- javascript -->
 <script src="{{ STATIC_URL }}assets/js/jquery-1.9.1.min.js"></script>
 <script src="{{ STATIC_URL }}assets/js/underscore-min.js"></script>
-<script src="{{ STATIC_URL }}assets/js/backbone-min.js"></script>
 <script type="text/javascript">
 var ie=document.all;
 var nn6=document.getElementById&&!document.all;
@@ -146,19 +145,23 @@ document.onmouseup=new Function("isdrag=false");
 </script>
 <script>
 
-function completeJob(eventObj) {
+function completeJob(e) {
   var params, $form;
   $form = $('.form-ns-question-job');
   params = $form.serialize();
-  alert("Thank you so much for completing the job! Feel free to continue doing more jobs.");
+  params['assignmentId'] = "{{ assignmentId }}";
+  params['hitId'] = "{{ hitId }}";
+  params['amt'] = {{ amt }};
   $.ajax({
     type: "POST",
     url: '{% url 'image-score-submission' %}',
     data: params,
+    success: function() {
+        window.location.href='{% url "amt-image-poll-debrief" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}';
+      }
   });
-  location.reload(true);
+  //location.reload(true);
 
 }
 </script>
-  
 </html>
