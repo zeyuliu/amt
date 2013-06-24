@@ -4,6 +4,8 @@ from website.settings import PROJECT_ROOT
 
 # Create your models here.
 class Subject(models.Model):
+    # The id assigned by the AMT for this task
+    assignment_id = models.CharField(max_length=128)
     # The worker id assigned by AMT so we can identify participants
     worker_id = models.CharField(max_length=128)
     # The id assigned by AMT for this hit

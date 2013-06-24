@@ -8,6 +8,8 @@ class ImageGroup(models.Model):
     # 0 if unassigned and incomplete
     # 1 if assigned
     # 2 if completed
+    # 3 if abandoned
+    # 4 if not adequately debriefed
     status = models.IntegerField()
     subject = models.ForeignKey(Subject, blank=True, null=True)
 
@@ -21,6 +23,7 @@ class Image(models.Model):
     ranking = models.IntegerField(default=-1)
     image_group = models.ForeignKey(ImageGroup)
     image_id = models.CharField(max_length=30)
+    disabled = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.image_id)
