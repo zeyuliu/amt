@@ -149,6 +149,7 @@ function completeJob(e) {
   var params, $form;
   $form = $('.form-ns-question-job');
   params = $form.serialize();
+  params['workerId'] = "{{ workerId }}";
   params['assignmentId'] = "{{ assignmentId }}";
   params['hitId'] = "{{ hitId }}";
   params['amt'] = {{ amt }};
@@ -157,7 +158,7 @@ function completeJob(e) {
     url: '{% url 'image-score-submission' %}',
     data: params,
     success: function() {
-        window.location.href='{% url "amt-image-poll-debrief" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}';
+        window.location.href='{% url "amt-image-poll-debrief" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&workerId={{ workerId }}';
       }
   });
   //location.reload(true);

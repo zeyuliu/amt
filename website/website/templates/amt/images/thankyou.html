@@ -1,0 +1,9 @@
+Thank you for participating.
+{% if amt == "1" %}
+<form id="mturk-form" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="post">
+  <input type="hidden" id="assignmentId" name="assignmentId" value="{{ assignmentId }}" />
+  <input type="hidden" id="hitId" name="hitId" value="{{ hitId }}" />
+  <input type="hidden" id="workerId" name="workerId" value="{{ workerId }}" />
+  <input type="submit" name="submit-amt" class="consent-button-confirm" value="Complete HIT" />
+</form>
+{% endif %}

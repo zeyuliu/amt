@@ -1,4 +1,5 @@
 import urllib2
+import urllib
 from datetime import datetime
 
 from django.shortcuts import render_to_response
@@ -17,6 +18,7 @@ def landing(request, template_name='amt/images/landing.html'):
     """
     Landing view for external url. This page provides a consent form.
     Only after acceptance of the consent form can the user participate in the study.
+    There should also be a warning that the user must accept the HIT first.
     """
     # Data to render to template
     data = {'amt': int(False)}
@@ -31,16 +33,19 @@ def landing(request, template_name='amt/images/landing.html'):
         data['amt'] = int(True)
     data['assignmentId'] = assignmentId
     data['hitId'] = hitId
+    data['workerId'] = workerId
     return render_to_response(template_name, data, context_instance=RequestContext(request))
 
 def display(request, template_name='amt/images/main.html'):
     amt = request.GET.get('amt', None)
     assignmentId = request.GET.get('assignmentId', default=None)
     hitId = request.GET.get('hitId', default=None)
-    if amt == 1 and assignmentId and hitId:
+    workerId = request.GET.get('workerId', default=None)
+    if amt == 1 and assignmentId and hitId and workerId:
     # Create a Subject object
         subject = Subject(
-            worker_id=assignmentId,
+            worker_id=workerId,
+            assignment_id=assignmentId,
             hit_id=hitId,
             debriefed=False,
             time_started=datetime.utcnow(),
@@ -58,6 +63,7 @@ def display(request, template_name='amt/images/main.html'):
     data = {
         'assignmentId': assignmentId,
         'hitId': hitId,
+        'workerId': workerId,
         'amt': amt,
         'images': image_group.image_set.all()
     }
@@ -67,11 +73,13 @@ def debrief(request, template_name='amt/images/debrief.html'):
     amt = request.GET.get('amt', None)
     assignmentId = request.GET.get('assignmentId', default=None)
     hitId = request.GET.get('hitId', default=None)
-    if amt == 1 and assignmentId and hitId:
+    workerId = request.GET.get('workerId', default=None)
+    if amt == 1 and assignmentId and hitId and workerId:
         try:
             # Grab subject
             subject = Subject.objects.filter(
-                worker_id=assignmentId,
+                worker_id=workerId,
+                assignment_id=assignmentId,
                 hit_id=hitId,
                 debriefed=False,
                 time_completed__isnull=True
@@ -86,6 +94,7 @@ def debrief(request, template_name='amt/images/debrief.html'):
         'assignmentId': assignmentId,
         'hitId': hitId,
         'amt': amt,
+        'workerId': workerId
     }
     return render_to_response(template_name, data, context_instance=RequestContext(request))
 
@@ -94,18 +103,14 @@ def thankyou(request, template_name='amt/images/thankyou.html'):
     assignmentId = request.GET.get('assignmentId', default=None)
     hitId = request.GET.get('hitId', default=None)
     decision = request.GET.get('decision', default=None)
+    workerId = request.GET.get('workerId', default=None)
     if amt == 1:
-        # pay the participant
-        url = 'https://workersandbox.mturk.com/mturk/externalSubmit'
-        post_data = {
-                'assignmentId' : assignmentId,
-                'hitId': hitId,
-                'workerId'
         if assignmentId and hitId and decision == 0:
             try:
                 # Grab subject
                 subject = Subject.objects.filter(
-                    worker_id=assignmentId,
+                    worker_id=workerId,
+                    assignment_id=assignmentId,
                     hit_id=hitId,
                     debriefed=True,
                     time_completed__isnull=True
@@ -117,4 +122,10 @@ def thankyou(request, template_name='amt/images/thankyou.html'):
                     image_group.image_set.update(deleted=True)
             except Subject.DoesNotExist:
                 return HttpResponse('Sorry, an error has occurred. Please make sure you did not press the back button.', status=400)
-    return render_to_response(template_name, context_instance=RequestContext(request))
+    data = {
+        'assignmentId': assignmentId,
+        'hitId': hitId,
+        'amt': amt,
+        'workerId': workerId
+    }
+    return render_to_response(template_name, data, context_instance=RequestContext(request))

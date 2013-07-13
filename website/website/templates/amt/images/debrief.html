@@ -31,8 +31,9 @@
       <div class='debrief-form'>
         I feel that I have been adequately debriefed about the nature of the study. The investigator has explained the purposes of the research to me and i understand that if I have any questions, I may contact her at[...]
       </div>
-      <input type="button" class="consent-button-confirm" value="I Agree" onClick="javascript:window.location.href='{% url "amt-image-poll-thanks" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&decision=1'"/>
+      <input type="button" class="consent-button-agree" value="I Agree" onClick="javascript:window.location.href='{% url "amt-image-poll-thanks" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&decision=1'"/>
       <input type="button" class="consent-button-cancel" value="I Disagree" onClick="javascript:window.location.href='{% url "amt-image-poll-thanks" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&decision=0'"/>
     </div>
   </body>
+<script src="{{ STATIC_URL }}assets/js/jquery-1.9.1.min.js"></script>
 </html>

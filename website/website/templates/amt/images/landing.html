@@ -11,7 +11,7 @@
         Agree to this and that...
       </div>
       <div class="consent-confirm" style="display:inline">
-	<input type="button" class="consent-button-confirm" value="I Agree" onClick="javascript:window.location.href='{% url "amt-image-poll" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}'"/>
+	<input type="button" class="consent-button-confirm" value="I Agree" onClick="javascript:window.location.href='{% url "amt-image-poll" %}?assignmentId={{ assignmentId }}&hitId={{ hitId }}&amt={{ amt }}&workerId={{ workerId }}'"/>
         <input type="button" class="consent-button-cancel" value="I Disagree" onClick="javascript:rejectedConsent()"/>
       </div>
     </div>

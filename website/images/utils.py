@@ -6,7 +6,6 @@ from images.models import ImageGroup
 
 def bulk_add_images(path):
     try:
-        import pdb; pdb.set_trace()
         csv_file = open(PROJECT_ROOT + "/" + path)
         file_reader = csv.reader(csv_file, delimiter=',', quotechar='|')
         reader_as_list = list(file_reader)
